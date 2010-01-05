@@ -28,7 +28,12 @@ end
 def winkel(ebene1, ebene2)
   n = normalen_vektor(ebene1)
   m = normalen_vektor(ebene2)
-  Math.acos( Math.abs(n.inner_product(m)) / (n.norm * m.norm))
+  tmp = n.inner_product(m).abs / (n.norm * m.norm)
+  # Rundungsfehler abfangen
+  if tmp > 1.0
+    tmp = 1.0
+  end
+  Math.acos( tmp )
 end
 
 def punkte2ebene(punkte)
@@ -68,9 +73,48 @@ class Tisch
     ebene2 = punkte2ebene([vektoren[gegenueber_idx], vektoren[(gegenueber_idx + 1)%4], vektoren[(gegenueber_idx - 1)%4]])
     winkel(ebene1, ebene2)
   end
+
+  def to_s
+    "<Tisch - Beine: #{beine.inspect}>"
+  end
 end
 
-def crossing(tisch1, tisch2)
+# grossN | Populationsgröße
+# n      | Überlebende pro Generation
+# rho    | Wahrscheinlichkeit einer Mutation
+# f      | Fitnessfunktion
+def evolutioniere(grossN, n, rho, f, mutiere, kreuze, generationen)
+  population = Array.new(grossN) {
+    Tisch.new(Array.new(4) {rand(21)+90})
+  }
+  generationen.times {
+    population = next_gen(grossN, n, rho, f, mutiere, kreuze, population)
+  }
+  population
+end
+
+def next_gen(grossN, n, rho, f, mutiere, kreuze, population)
+  ueberlebende = population.map {|individuum|
+    if rand <= rho
+      mutiere[individuum]
+    else
+      individuum
+    end
+  }.sort_by(&f)[-n .. -1]
+  ueberlebende + Array.new(grossN - n) {
+    kreuze[ ueberlebende[rand(n)], ueberlebende[rand(n)] ]
+  }
+end
+
+def mutation(s)
+  lambda {|tisch|
+    Tisch.new(Array.new(4) {|i|
+                tisch.beine[i] + rand(2*s + 1) - s
+              })
+  }
+end
+
+kreuzung = lambda {|tisch1, tisch2|
   Tisch.new(Array.new(4) {|i|
     if rand(2) == 0
       tisch1.beine[i]
@@ -78,19 +122,13 @@ def crossing(tisch1, tisch2)
       tisch2.beine[i]
     end
   })
-end
+}
 
-def mutation(tisch, s)
-  Tisch.new(Array.new(4) {|i|
-              tisch.beine[i] + rand(2*s + 1) - s
-            })
-end
-
-def fitness(tisch)
+fitness = lambda {|tisch|
   -(tisch.schiefe + tisch.wackeln)
-end
+}
 
-def evolutioniere(grossN, n, rho, f, mutiere, kreuze)
 
-end
- 
+grossN, n, rho, s, anzahl_generationen = ARGV[0].to_i, ARGV[1].to_i, ARGV[2].to_f, ARGV[3].to_i, ARGV[4].to_i
+
+puts evolutioniere(grossN, n, rho, fitness, mutation(s), kreuzung, anzahl_generationen)
