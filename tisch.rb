@@ -46,6 +46,6 @@ class Tisch
   # Eine to-string-Methode, damit Tische sinnvoll auf die Konsole ausgegeben
   # werden können
   def to_s
-    "<Tisch - Beine: #{beine.inspect}>"
+    "<Tisch - Beine: #{beine.inspect} Schiefe: #{schiefe} Wackeln: #{wackeln}>"
   end
 end

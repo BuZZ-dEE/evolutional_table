@@ -2,6 +2,7 @@ In diesem Projekt werden Tische evolutioniert.
 Wenn Sie schon immer mal Tische evolutionieren wollten, ist dieses Projekt genau das richtige für Sie.
 
 Dateien:
+util.rb                  - Enthält die Methoden sum und avg, die im Code verwendet werden
 geometrie.rb             - Enthält einige nützliche Funktionen zum Rechnen mit Vektoren und Ebenen
 tisch.rb                 - Definiert die Tisch-Klasse mit den Eigenschaften Schiefe und Wackeln
 evolution.rb             - Enthält den verwendeten evolutionären Algorithmus in allgemeiner Form
