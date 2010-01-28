@@ -17,16 +17,22 @@ class TischIcon < JPanel
     #  add JLabel.new("Bein #{index+1}: #{beinlaenge}")   
     #}
     add JLabel.new("Beine: #{tisch.beine.join(", ")}")
-    add JLabel.new("Schiefe: #{tisch.schiefe}")
-    add JLabel.new("Wackeln: #{tisch.wackeln}")
-    add JLabel.new("Fitness: #{-(tisch.schiefe + tisch.wackeln)}")
+    add JLabel.new("<html>Schiefe: #{colorize tisch.schiefe}</html>")
+    add JLabel.new("<html>Wackeln: #{colorize tisch.wackeln}</html>")
+    add JLabel.new("<html>Fitness: -#{colorize(tisch.schiefe + tisch.wackeln)}</html>")
+  end
+
+  def colorize(wert)
+    "<font bgcolor=\"#{color wert}\">#{wert}</font>"
+  end
+
+  def color(wert)
+    if wert < 0.2
+      "green"
+    elsif wert < 1.0
+      "yellow"
+    else
+      "red"
+    end
   end
 end
-
-
-ti = TischIcon.new(Tisch.new([90,95,93,100]), "Ja, ja, deine Mudda")
-window = JFrame.new("Bla")
-window.add ti
-window.default_close_operation = JFrame::EXIT_ON_CLOSE
-window.pack
-window.show

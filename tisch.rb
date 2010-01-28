@@ -13,10 +13,10 @@ class Tisch
 
   # Vier Vektoren, die die vier Beine repräsentieren.
   def vektoren
-    [Vector[0, beine[0], 0],
-     Vector[1, beine[1], 0],
-     Vector[1, beine[2], 1],
-     Vector[0, beine[3], 1]]
+    [Vektor[0, beine[0], 0],
+     Vektor[1, beine[1], 0],
+     Vektor[1, beine[2], 1],
+     Vektor[0, beine[3], 1]]
   end
   
   # Die Schiefe eines Tisches ist der Winkel zwischen der Ebene, die durch die

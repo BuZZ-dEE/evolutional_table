@@ -1,19 +1,35 @@
 # -*- coding: utf-8 -*-
-require 'matrix'  # matrix.rb stellt die Klasse Vector zur Verfügung
 
 # Füge ein paar Methoden, zur Vector Klasse hinzu
-class Vector
+class Vektor < Array
   # Berechnet die Euklidische Norm des Vektors
   def norm
-    Math.sqrt(inner_product(self))
+    Math.sqrt(self * self)
+  end
+
+  # Berechne das Skalarprodukt von zwei Vektoren
+  # Wer diese Methode mit Vektoren ungleicher Länge aufruft,
+  # den soll der Teufel holen
+  def *(rhs)
+    zip(rhs).map {|x,y| x*y}.sum
+  end
+
+  # Elementweise Differenz von zwei Vektoren
+  def -(rhs)
+    Vektor[*zip(rhs).map {|x,y| x-y}]
+  end
+
+  # Elementweise Summe von zwei Vektoren
+  def +(rhs)
+    Vektor[*zip(rhs).map {|x,y| x-y}]
   end
 
   # Berechnet das Kreuzprodukt eines drei-dimensionalen Vektors mit einem
   # anderen drei-dimensionalen Vektors.
   # Wer diese Methode mit Vektoren, die mehr oder weniger als drei Elemente
   # haben, aufruft, den soll der Teufel holen.
-  def cross_product(rhs)
-    Vector[self[1]*rhs[2] - self[2]*rhs[1],
+  def kreuz_produkt(rhs)
+    Vektor[self[1]*rhs[2] - self[2]*rhs[1],
            self[2]*rhs[0] - self[0]*rhs[2],
            self[0]*rhs[1] - self[1]*rhs[0]]  
   end
@@ -40,21 +56,21 @@ class Ebene
   end
 
   # Die XZ-Ebene (aka die "Boden-Ebene")
-  XZ = Ebene.new( Vector[0,0,0],
-                  Vector[1,0,0],
-                  Vector[0,0,1])
+  XZ = Ebene.new( Vektor[0,0,0],
+                  Vektor[1,0,0],
+                  Vektor[0,0,1])
 
 
   # Gib einen Vektor zurück, der senkrecht auf der Ebene steht
   def normalen_vektor
-    richtungs_vektor1.cross_product(richtungs_vektor2)
+    richtungs_vektor1.kreuz_produkt(richtungs_vektor2)
   end
 
   # Berechne den Winkel zwischen zwei Ebenen
   def winkel(rhs)
     n = normalen_vektor
     m = rhs.normalen_vektor
-    cos = n.inner_product(m).abs / (n.norm * m.norm)
+    cos = (n * m).abs / (n.norm * m.norm)
     # Floating Point Ungenauigkeiten, können dazu führen, dass cos > 1.0
     # Dieser Fall wird hier abgefangen, damit acos keine Exception wirft
     if cos > 1.0

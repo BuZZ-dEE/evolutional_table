@@ -44,12 +44,15 @@ module EvolutioniereTische
   # Erzeugt eine zufällige Startgeneration mit Beinlängen zwischen 90 und 110
   # und wendet darauf den evolutionären Algorithmus für generationen Generationen
   # an
-  def evolutioniere_tische(grossN, n, rho, s, generationen)
+  def evolutioniere_tische(grossN, n, rho, s, generationen, &blk)
     population = Array.new(grossN) {
       Tisch.new(Array.new(4) {rand(21)+90})
     }
     generationen.times {
       population = next_gen(grossN, n, rho, s, population)
+      if blk
+        blk[population]
+      end
     }
     population
   end
