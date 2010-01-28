@@ -2,12 +2,24 @@ In diesem Projekt werden Tische evolutioniert.
 Wenn Sie schon immer mal Tische evolutionieren wollten, ist dieses Projekt genau das richtige für Sie.
 
 Dateien:
-util.rb                  - Enthält die Methoden sum und avg, die im Code verwendet werden
-geometrie.rb             - Enthält einige nützliche Funktionen zum Rechnen mit Vektoren und Ebenen
-tisch.rb                 - Definiert die Tisch-Klasse mit den Eigenschaften Schiefe und Wackeln
-evolution.rb             - Enthält den verwendeten evolutionären Algorithmus in allgemeiner Form
-evolutioniere_tische.rb  - Definiert Mutiations- und Kreuzungs-Operatoren, sowie eine Fitness-Funktion
-                           für Tische und wendet den evolutioniären Algorithmus aus evolution.rb darauf an.
+src/
+  util.rb                  - Enthält die Methoden sum und avg, die im Code verwendet werden
+  geometrie.rb             - Enthält einige nützliche Funktionen zum Rechnen mit Vektoren und Ebenen
+  tisch.rb                 - Definiert die Tisch-Klasse mit den Eigenschaften Schiefe und Wackeln
+  evolution.rb             - Enthält den verwendeten evolutionären Algorithmus in allgemeiner Form
+  evolutioniere_tische.rb  - Definiert Mutiations- und Kreuzungs-Operatoren, sowie eine Fitness-Funktion
+                             für Tische und wendet den evolutioniären Algorithmus aus evolution.rb darauf an.
+  gui/
+    tisch_icon.rb          - Definiert eine Swing-Klasse, die die Eigenschaften eines Tisches in textueller
+                             Form mit Farbkodierung anzeigt
+    ergebnis_anzeige.rb    - Definiert eine Swing-Klasse, die für jede Generation des Algorithmus die
+                             Tische dieser Generation in Tabellenform mittels TischIcons darstellt
+    hauptfenster.rb        - Erstellt ein Swing-Fenster, in dem die Parameter des Algorithmus eingestellt
+                             werden können und dann die Ergebnisse angezeigt werden
+
+
+Kompilation (benötigt rake und jruby):
+rake
 
 Aufruf:
-ruby evolutioniere_tische.rb N n rho s anzahl_generationen
+java -jar evolution.jar
